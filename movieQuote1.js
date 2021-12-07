@@ -44,6 +44,7 @@ const cfgScreenSwaps = 60000;
 const cfgQuoteSwap = 90000;
 var currentScreen = 0;
 var paused=false;
+var htmlElementBucket;
 
 function getMovie() {
 	movieQuoteData.movieTitle = document.getElementById("movieEntry").value;
@@ -169,9 +170,18 @@ function screenSwap(){
 	console.log("Current Screen: "+ currentScreen + " Array: "+ nextScreenArray);
 }
 
-function displayQuotes(){
+function displayQuotes(displayElementID){
 	//console.log(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
-	document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)))
+
+	if(displayElementID){
+		htmlElementBucket = document.getElementById(displayElementID);
+		//htmlElementBucket.innerHTML=JSON.stringify(localStorage.getItem(MOVIE_QUOTES));
+		htmlElementBucket.innerHTML="<b>test</b>test2";
+	}
+	{
+		//document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+	}
+	
 }
 //displayQuotes();
 
