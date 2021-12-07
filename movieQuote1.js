@@ -30,6 +30,7 @@ var movieQuoteData = {
 	movieImage: ""
 };
 
+const ChristmasMovieVoteCalc = "ChristmasMovieVoteCalc";
 const ChristmasMovieQuote = "ChristmasMovieQuote";
 const ChristmasMovieLBDisplay = "ChristmasMovieLBDisplay";
 const ChristmasMovieQuoteDisplay = "ChristmasMovieQuoteDisplay";
@@ -55,6 +56,7 @@ function getMovie() {
 		writeMovieQuote();
 		addToMovieQuotes(movieQuoteData);
 		//screenSwap();
+		//goQuotesDisplay();
 	}
 	else {
 		clearForm();
@@ -89,6 +91,7 @@ function clearForm() {
 			radioList[i].checked = false;
 		}
 	}
+	goQuotesDisplay();
 }
 
 function calculateLeaderBoardPosition(newUserQuoteData) {
@@ -110,21 +113,48 @@ function qualifyForLeaderBoard(leader, user) {
 }
 
 function addToLeaderBoard(user) {
-	var leaderBoard = localStorage.getItem(LEADER_BOARD);
-	var userData = JSON.stringify(user);
-	leaderBoard += userData;
-	localStorage.setItem(LEADER_BOARD, leaderBoard);
+	var movieQuotesAsString = loadLocalFile(LEADER_BOARD);
+	var movieQuotes;
+	if (movieQuotesAsString){
+		movieQuotes = JSON.parse(movieQuotesAsString);
+	}else{
+		movieQuotes= [];
+		movieQuotes.push(movieQuote);
+	}
+		loadLocalFile(LEADER_BOARD, JSON.stringify(movieQuotes));
 }
 
-function addToMovieQuotes(user) {
-	var quoteRepository = localStorage.getItem(MOVIE_QUOTES);
-	var userData = JSON.stringify(user);
-	quoteRepository += userData;
-	localStorage.setItem(MOVIE_QUOTES, quoteRepository);
+function addToMovieQuotes(movieQuote) {
+	var movieQuotesAsString = loadLocalFile(MOVIE_QUOTES);
+	var movieQuotes;
+	if (movieQuotesAsString){
+		movieQuotes = JSON.parse(movieQuotesAsString);
+
+	}else{
+		movieQuotes= [];
+	}
+	movieQuotes.push(movieQuote);
+	loadLocalFile(MOVIE_QUOTES, JSON.stringify(movieQuotes));
 }
 
 function goVote(){
+	document.location.href=ChristmasMovieVoteCalc+".htm";
+}
+
+function goQuote(){
 	document.location.href=ChristmasMovieQuote+".htm";
+}
+
+function goLBDisplay(){
+	document.location.href=ChristmasMovieLBDisplay+".htm";
+}
+
+function goQuotesDisplay(){
+	document.location.href=ChristmasMovieQuoteDisplay+".htm";
+}
+
+function goTitle(){
+	document.location.href=ChristmasMovieTitleScreen+".htm";
 }
 
 function screenSwap(){
@@ -139,3 +169,16 @@ function screenSwap(){
 	console.log("Current Screen: "+ currentScreen + " Array: "+ nextScreenArray);
 }
 
+function displayQuotes(){
+	//console.log(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+	document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)))
+}
+//displayQuotes();
+
+function loadLocalFile(localFile){
+	return(localStorage.getItem(localFile));
+}
+
+function setLocalFile(localFile, localFileData){
+	localStorage.setItem(localFile, localFileData);
+}
