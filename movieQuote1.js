@@ -107,6 +107,7 @@ function calculateLeaderBoardPosition(newUserQuoteData) {
 function getLeaderBoard() {
 	/* Retreive the Leader Board from local storage */
 	var leaderBoard = localStorage.getItem(LEADER_BOARD);
+	return leaderBoard
 }
 
 function qualifyForLeaderBoard(leader, user) {
@@ -175,15 +176,25 @@ function displayQuotes(displayElementID){
 
 	if(displayElementID){
 		htmlElementBucket = document.getElementById(displayElementID);
-		//htmlElementBucket.innerHTML=JSON.stringify(localStorage.getItem(MOVIE_QUOTES));
-		htmlElementBucket.innerHTML="<b>test</b>test2";
+		htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(MOVIE_QUOTES));
 	}
 	{
 		//document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
 	}
 	
 }
-//displayQuotes();
+function displayLB(displayElementID){
+	//console.log(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+
+	if(displayElementID){
+		htmlElementBucket = document.getElementById(displayElementID);
+		htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(LEADER_BOARD));
+	}
+	{
+		//document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+	}
+	
+}
 
 function loadLocalFile(localFile){
 	return(localStorage.getItem(localFile));
@@ -191,4 +202,12 @@ function loadLocalFile(localFile){
 
 function setLocalFile(localFile, localFileData){
 	localStorage.setItem(localFile, localFileData);
+}
+
+function yesVote(){
+	console.log("YesVote");
+}
+
+function noVote(){
+	console.log("NoVote");
 }

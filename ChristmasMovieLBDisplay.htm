@@ -2,22 +2,16 @@
     <head>
         <title>Christmas Movie Leader Board</title>
     </head>
-    <body>
+    <body onload="displayLB('LeaderBoardDisplayID');">
         <h1>Christmas Movie Leader Board</h1>
-        <div><!--Vote 4 the Best Christmas Movie Quote-->
-        </div>
-        <div>
-            <!--First Movie Quote Eligible Vote-->
-        </div>
-        <div>
-            <!--Second Movie Quote Eligible Vote-->
+        <div id="LeaderBoardDisplayID"><!--Best Christmas Movie Quote Leader Board-->
+            
         </div>
         <div>
             <!--Button going back to Leader Board-->
             <button type="button" onclick="goVote();"> Vote for Quote</button>
             <button type="button" onclick="goQuote();"> Enter Quote</button>            
         </div>
-
     </body>
     <script src="movieQuote1.js"></script>
-</html>
+ </html>
