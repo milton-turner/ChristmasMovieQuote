@@ -12,15 +12,6 @@ Bad word scrambler
     ****/
 
 var movieQuoteData = {
-contestantName:"",
-contestantNation:"",
-movieTitle:"",
-movieQuote:"",
-movieQuotePts:0,
-movieRank:"",
-movieImage:""};
-
-var movieQuoteData = {
 	contestantName: "",
 	contestantNation: "",
 	movieTitle: "",
@@ -29,6 +20,9 @@ var movieQuoteData = {
 	movieRank: "",
 	movieImage: ""
 };
+
+let movieQuoteDataArr = [movieQuoteData];
+let leaderBoardArr = [movieQuoteData];
 
 const ChristmasMovieVoteCalc = "ChristmasMovieVoteCalc";
 const ChristmasMovieQuote = "ChristmasMovieQuote";
@@ -204,10 +198,24 @@ function setLocalFile(localFile, localFileData){
 	localStorage.setItem(localFile, localFileData);
 }
 
-function yesVote(){
+function yesVote(quoteDataArg){
 	console.log("YesVote");
 }
 
-function noVote(){
+function noVote(quoteDataArg){
 	console.log("NoVote");
+}
+
+function loadLeaderAndQuoteArr(){
+	if(movieQuoteDataArr.length <= 1){
+		/**todo load the Leader Board and Quote Array in memory */
+		movieQuoteDataArr=JSON.parse(loadLocalFile(MOVIE_QUOTES));
+	}
+	if(leaderBoardArr.length <= 1){
+		leaderBoardArr=JSON.parse(loadLocalFile(LEADER_BOARD));
+	}
+}
+
+function displayFormattedMovieQuote(data){
+	data.forEach(d => {console.log("Movie: "+ d.movieTitle + "\nQuote: "+ d.movieQuote)});
 }
