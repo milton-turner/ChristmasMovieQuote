@@ -12,6 +12,15 @@ Bad word scrambler
     ****/
 
 var movieQuoteData = {
+contestantName:"",
+contestantNation:"",
+movieTitle:"",
+movieQuote:"",
+movieQuotePts:0,
+movieRank:"",
+movieImage:""};
+
+var movieQuoteData = {
 	contestantName: "",
 	contestantNation: "",
 	movieTitle: "",
@@ -20,9 +29,6 @@ var movieQuoteData = {
 	movieRank: "",
 	movieImage: ""
 };
-
-let movieQuoteDataArr = [movieQuoteData];
-let leaderBoardArr = [movieQuoteData];
 
 const ChristmasMovieVoteCalc = "ChristmasMovieVoteCalc";
 const ChristmasMovieQuote = "ChristmasMovieQuote";
@@ -112,15 +118,15 @@ function addToLeaderBoard(user) {
 	var movieQuotesAsString = loadLocalFile(LEADER_BOARD);
 	var movieQuotes;
 	if (movieQuotesAsString){
-		movieQuotes = JSON.parse(movieQuotesAsString);
+		movieQuotes = JSON.stringify(movieQuotesAsString);
 	}else{
 		movieQuotes= [];
-		movieQuotes.push(movieQuote);
 	}
-		loadLocalFile(LEADER_BOARD, JSON.stringify(movieQuotes));
+	movieQuotes.push(user);
+	setLocalFile(LEADER_BOARD, JSON.parse(movieQuotes));
 }
 
-function addToMovieQuotes(movieQuote) {
+function addToMovieQuotes(user) {
 	var movieQuotesAsString = loadLocalFile(MOVIE_QUOTES);
 	var movieQuotes;
 	if (movieQuotesAsString){
@@ -129,8 +135,8 @@ function addToMovieQuotes(movieQuote) {
 	}else{
 		movieQuotes= [];
 	}
-	movieQuotes.push(movieQuote);
-	loadLocalFile(MOVIE_QUOTES, JSON.stringify(movieQuotes));
+	movieQuotes.push(user);
+	setLocalFile(MOVIE_QUOTES, JSON.stringify(movieQuotes));
 }
 
 function goVote(){
@@ -198,24 +204,10 @@ function setLocalFile(localFile, localFileData){
 	localStorage.setItem(localFile, localFileData);
 }
 
-function yesVote(quoteDataArg){
+function yesVote(){
 	console.log("YesVote");
 }
 
-function noVote(quoteDataArg){
+function noVote(){
 	console.log("NoVote");
-}
-
-function loadLeaderAndQuoteArr(){
-	if(movieQuoteDataArr.length <= 1){
-		/**todo load the Leader Board and Quote Array in memory */
-		movieQuoteDataArr=JSON.parse(loadLocalFile(MOVIE_QUOTES));
-	}
-	if(leaderBoardArr.length <= 1){
-		leaderBoardArr=JSON.parse(loadLocalFile(LEADER_BOARD));
-	}
-}
-
-function displayFormattedMovieQuote(data){
-	data.forEach(d => {console.log("Movie: "+ d.movieTitle + "\nQuote: "+ d.movieQuote)});
 }
