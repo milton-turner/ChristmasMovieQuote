@@ -62,6 +62,7 @@ function getMovie() {
 	else {
 		clearForm();
 	}
+	screenSwap();
 }
 
 function getRadioValue(name) {
