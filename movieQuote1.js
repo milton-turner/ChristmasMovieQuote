@@ -34,17 +34,20 @@ const ChristmasMovieVoteCalc = "ChristmasMovieVoteCalc";
 const ChristmasMovieQuote = "ChristmasMovieQuote";
 const ChristmasMovieLBDisplay = "ChristmasMovieLBDisplay";
 const ChristmasMovieQuoteDisplay = "ChristmasMovieQuoteDisplay";
-const ChristmasMovieTitleScreen = "ChristmasMovieTitleScreen";
-const nextScreenArray = [ChristmasMovieLBDisplay, ChristmasMovieQuoteDisplay, ChristmasMovieTitleScreen];
+const ChristmasMovieTitleScreen = "index";
+const nextScreenArray = [ChristmasMovieTitleScreen, ChristmasMovieLBDisplay, ChristmasMovieQuoteDisplay];
 const LEADER_BOARD = "leaderBoard";
-const MOVIE_QUOTES = "movieQuotes"
+const MOVIE_QUOTES = "movieQuotes";
+const MOVIE_A = "movieQuoteA";
+const MOVIE_B = "movieQuoteB";
 const cfgLeaderBoardNum = 10;
 const cfgActivityTimeOut = 180000;
-const cfgScreenSwaps = 60000;
+const cfgScreenSwaps = 6000;
 const cfgQuoteSwap = 90000;
 var currentScreen = 0;
 var paused=false;
 var htmlElementBucket;
+let movieA, movieB;
 
 function getMovie() {
 	movieQuoteData.movieTitle = document.getElementById("movieEntry").value;
@@ -54,7 +57,7 @@ function getMovie() {
 	if (document.getElementById("movieEntry").value &&
 		document.getElementById("quoteEntry").value &&
 		document.getElementById("contestantNameEntry").value) {
-		writeMovieQuote();
+		//writeMovieQuote();
 		addToMovieQuotes(movieQuoteData);
 		//screenSwap();
 		//goQuotesDisplay();
@@ -62,7 +65,7 @@ function getMovie() {
 	else {
 		clearForm();
 	}
-	screenSwap();
+	setTimeout(screenSwap,cfgScreenSwaps);
 }
 
 function getRadioValue(name) {
@@ -141,60 +144,78 @@ function addToMovieQuotes(user) {
 }
 
 function goVote(){
-	document.location.href=ChristmasMovieVoteCalc+".htm";
+	document.location.assign(ChristmasMovieVoteCalc+".htm");
 }
 
 function goQuote(){
-	document.location.href=ChristmasMovieQuote+".htm";
+	document.location.assign(ChristmasMovieQuote+".htm");
 }
 
 function goLBDisplay(){
-	document.location.href=ChristmasMovieLBDisplay+".htm";
+	document.location.assign(ChristmasMovieLBDisplay+".htm");
 }
 
 function goQuotesDisplay(){
-	document.location.href=ChristmasMovieQuoteDisplay+".htm";
+	document.location.assign(ChristmasMovieQuoteDisplay+".htm");
 }
 
 function goTitle(){
-	document.location.href=ChristmasMovieTitleScreen+".htm";
+	document.location.assign(ChristmasMovieTitleScreen+".htm");
 }
 
 function screenSwap(){
-	const d = new Date();
-	swapTimer = d.getTime();
+	// const d = new Date();
+	// swapTimer = d.getTime();
+	// console.log("Current Screen: "+ currentScreen + " Array: "+ nextScreenArray);
+	// if(nextScreenArray.length > currentScreen) currentScreen=0;
+	// while(swapTimer+cfgScreenSwaps < d.getTime()){
+	// 	//wait till time to switch to next screen
+	// }
+	// document.location.href=nextScreenArray[currentScreen++]+".htm";
 	console.log("Current Screen: "+ currentScreen + " Array: "+ nextScreenArray);
-	if(nextScreenArray.length > currentScreen) currentScreen=0;
-	while(swapTimer+cfgScreenSwaps < d.getTime()){
-		//wait till time to switch to next screen
-	}
-	document.location.href=nextScreenArray[currentScreen++]+".htm";
-	console.log("Current Screen: "+ currentScreen + " Array: "+ nextScreenArray);
+
+	document.location.assign(nextScreenArray[(Math.floor(Math.random() * nextScreenArray.length))]+".htm");
 }
 
 function displayQuotes(displayElementID){
 	//console.log(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
-
-	if(displayElementID){
-		htmlElementBucket = document.getElementById(displayElementID);
-		htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(MOVIE_QUOTES));
+	data = JSON.parse(localStorage.getItem(MOVIE_QUOTES));
+	if(data){
+		if(displayElementID){
+			htmlElementBucket = document.getElementById(displayElementID);
+			//htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(MOVIE_QUOTES));
+			data.forEach(d => {htmlElementBucket.innerHTML += ("<p>Movie: "+ d.movieTitle + "<br>Quote: " + d.movieQuote + "<br>Name: " + d.contestantName + "<br>Nation: " + d.contestantNation + "<\p>")});
+		}else
+		{
+			document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+		}
 	}
-	{
-		//document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+	else{
+		document.write("No Quotes yet");
 	}
-	
+	setTimeout(screenSwap,cfgScreenSwaps);
 }
 function displayLB(displayElementID){
 	//console.log(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+	/**ToDo handle null case from leader board local storeage */
+	data = JSON.parse(localStorage.getItem(MOVIE_QUOTES));
+	if(data){
+		if(displayElementID){
+			let parser
+			htmlElementBucket = document.getElementById(displayElementID);
+			//htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(LEADER_BOARD));
+			//htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(LEADER_BOARD));
+			data.forEach(d => {htmlElementBucket.innerHTML += ("<p>Movie: "+ d.movieTitle + "<br>Quote: " + d.movieQuote + "<br>Name: " + d.contestantName + "<br>Nation: " + d.contestantNation + "<\p>")});
 
-	if(displayElementID){
-		htmlElementBucket = document.getElementById(displayElementID);
-		htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(LEADER_BOARD));
+		}
+		else{
+			document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+		}
 	}
-	{
-		//document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+	else{
+		document.write("No Votes yet");
 	}
-	
+	setTimeout(screenSwap,cfgScreenSwaps);
 }
 
 function loadLocalFile(localFile){
@@ -205,10 +226,26 @@ function setLocalFile(localFile, localFileData){
 	localStorage.setItem(localFile, localFileData);
 }
 
-function yesVote(){
+function yesVote(quoteArg){
+	console.log("Movie A: \n" +quoteArg[movieA]);
 	console.log("YesVote");
 }
 
-function noVote(){
+function noVote(quoteArg){
 	console.log("NoVote");
 }
+
+function quoteVote(){
+    const quotes = JSON.parse(loadLocalFile(MOVIE_QUOTES));
+    if (quotes && quotes.length > 1) {
+        movieA = Math.floor(Math.random() * quotes.length);
+		do{
+			movieB=Math.floor(Math.random() * quote.length);
+			count++;
+			if (count > 10){
+				goQuote();//not enough quotes for voting
+			}
+		}while(movieB==movieA); //Keep looping till 2 different numbers are present
+		}
+}
+	
