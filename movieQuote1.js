@@ -47,7 +47,7 @@ const cfgQuoteSwap = 90000;
 var currentScreen = 0;
 var paused=false;
 var htmlElementBucket;
-let movieA, movieB;
+let movieA=0, movieB=0;
 
 function getMovie() {
 	movieQuoteData.movieTitle = document.getElementById("movieEntry").value;
@@ -195,6 +195,27 @@ function displayQuotes(displayElementID){
 	}
 	setTimeout(screenSwap,cfgScreenSwaps);
 }
+
+function displayOneQuote(displayElementID,recArtifact){
+	//console.log(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+	data = JSON.parse(localStorage.getItem(MOVIE_QUOTES));
+	if(data){
+		if(displayElementID){
+			htmlElementBucket = document.getElementById(displayElementID);
+			//htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(MOVIE_QUOTES));
+			htmlElementBucket.innerHTML += ("<p>Movie: "+ data[recArtifact].movieTitle + 
+				"<br>Quote: " + 
+				data[recArtifact].movieQuote + "<br>Name: " + 
+				data[recArtifact].contestantName + "<br>Nation: " + 
+				data[recArtifact].contestantNation + "<\p>");
+		}
+	}
+	else{
+		document.write("No Quotes yet");
+	}
+	setTimeout(screenSwap,cfgScreenSwaps);
+}
+
 function displayLB(displayElementID){
 	//console.log(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
 	/**ToDo handle null case from leader board local storeage */
