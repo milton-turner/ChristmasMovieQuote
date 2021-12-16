@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Christmas Movie Vote</title>
+    </head>
+    <body onload="movieQuote1.js;quoteVote();">
+        
+        <h1>Christmas Movie Vote</h1>
+        <div><!--Vote 4 the Best Christmas Movie Quote-->
+        </div>
+
+        <div id=Movie_A onclick="yesVote();">
+            <!--First Movie Quote Eligible Vote-->
+            <script>displayOneQuote(Movie_A,movieA)</script>
+            <button type="button" onclick="yesVote(quote[movieA]);">Yes Vote</button>
+            <button type="button" onclick="noVote(quote[movieA]);">Not a Christmas Movie</button>
+        </div>
+
+        <div id=Movie_B onclick="yesVote();">
+            <!--Second Movie Quote Eligible Vote-->
+            <script>displayOneQuote(Movie_B,movieB);</script>
+            <button type="button" onclick="yesVote(quote[movieB]);">Yes Vote</button>
+            <button type="button" onclick="noVote(quote[movieB]);">Not a Christmas Movie</button>
+       </div>
+
+       <div>
+            <!--Button going back to Leader Board-->
+            <button type="button" onclick="goLBDisplay();"> Cancel</button>
+        </div>
+        <script src="movieQuote1.js"></script>
+    </body>    
+</html>

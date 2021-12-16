@@ -17,7 +17,7 @@ contestantNation:"",
 movieTitle:"",
 movieQuote:"",
 movieQuotePts:0,
-movieRank:"",
+movieRank:false,
 movieImage:""};
 
 var localStoreInMemory = [movieQuoteData];
@@ -200,9 +200,12 @@ function displayOneQuote(displayElementID, movieQuote) {
 		const yesButton = document.createElement("button");
 		yesButton.onclick = () => yesVote(movieQuote);
 		yesButton.textContent = "Yes Vote";
-		
 		htmlElement.appendChild(yesButton);
-
+		
+		const noButton = document.createElement("button");
+		noButton.onclick = () => noVote(movieQuote);
+		noButton.textContent = "Not a  Christmas Movie";
+		htmlElement.appendChild(noButton);
 	}
 }
 
@@ -237,14 +240,19 @@ function setLocalFile(localFile, localFileData){
 	localStorage.setItem(localFile, localFileData);
 }
 
-function yesVote(movieQuote){
+function yesVote(quoteArg){
 	// htmlElement = document.getElementById(displayElementID);
-	console.log("Movie A: \n" + JSON.stringify(movieQuote));
+	console.log("Movie A: \n" + JSON.stringify(quoteArg));
 	console.log("YesVote");
+	quoteArg.movieQuotePts++;
+	quoteArg.movieRank=true;
 }
 
 function noVote(quoteArg){
+	console.log("Movie B: \n" + JSON.stringify(quoteArg));
 	console.log("NoVote");
+	(quoteArg.movieQuotePts > 0) ? quoteArg.movieQuotePts-- : quoteArg=0;
+	quoteArg.movieRank=false;
 }
 
 function quoteVoteLoad(){

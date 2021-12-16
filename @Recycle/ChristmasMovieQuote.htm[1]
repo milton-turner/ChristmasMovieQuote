@@ -1,0 +1,52 @@
+<html>
+
+<head>
+     <title>Place Your Favorite Christmas Movie Quote</title>
+</head>
+
+<body>
+    <div>
+        <!--Large Christmas title screen-->
+        <h1>Enter Your Favorite Christmas Movie Quote</h1>
+
+    </div>
+    <div>
+        <!--Movie and quote entry-->
+        <label for="movieTitle">Movie Title</label>
+        <input type="text" id="movieEntry" name="Christmas Movie Name" required size="25">
+        <br>
+        <label for="movieQuote">Movie Quote</label>
+        <textarea id="quoteEntry" name="Christmas Movie Quote" rows="5" cols="35"> </textarea>
+    </div>
+    <div>
+        <!--Contestant name and Country entry-->
+        <p>Enter your name and Nation</p>
+        <label for="contestantName">Your Name</label>
+        <input type="text" id="contestantNameEntry" name="ContestantName" required size="25">
+        <div>
+            <input type="radio" id="digitaly" name="contestantNation" value="dig">
+            <label for="nations">Digitaly</label>
+            <br>
+            <input type="radio" id="developmentopia" name="contestantNation" value="dev">
+            <label for="nations">Developmentopia</label>
+            <br>
+            <input type="radio" id="unitedServices" name="contestantNation" value="us">
+            <label for="nations">United Services</label>
+            <br>
+            <input type="radio" id="supportLandia" name="contestantNation" value="sup">
+            <label for="nations">Supportlandia</label>
+            <br>
+            <input type="radio" id="procuristan" name="contestantNation" value="pro">
+            <label for="nations">Procuristan</label>            
+        </div>
+    </div>
+    <div>
+        <!--Submit and cancel buttons-->
+        <button type="button" onclick="getMovie();"> Submit</button>
+        <button type="button" onclick="clearForm();"> Cancel</button>
+    </div>
+     
+    <script src="movieQuote1.js"></script>
+</body>
+
+</html>
