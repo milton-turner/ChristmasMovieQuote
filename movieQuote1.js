@@ -22,6 +22,8 @@ movieImage:""};
 
 var localStoreInMemory = [movieQuoteData];
 
+let quotes;
+
 const ChristmasMovieVoteCalc = "ChristmasMovieVoteCalc";
 const ChristmasMovieQuote = "ChristmasMovieQuote";
 const ChristmasMovieLBDisplay = "ChristmasMovieLBDisplay";
@@ -32,6 +34,7 @@ const LEADER_BOARD = "leaderBoard";
 const MOVIE_QUOTES = "movieQuotes";
 const MOVIE_A_DIV_ID = "Movie_A";
 const MOVIE_B_DIV_ID = "Movie_B";
+const MOVIE_VOTE_BUTTON_DIV_ID = "ButtonSelection";
 const cfgLeaderBoardNum = 10;
 const cfgActivityTimeOut = 180000;
 const cfgScreenSwaps = 60000;
@@ -186,15 +189,6 @@ function displayOneQuote(displayElementID, movieQuote) {
 			movieQuote.movieQuote + "<br>Name: " +
 			movieQuote.contestantName + "<br>Nation: " +
 			movieQuote.contestantNation + "<\p>");
-		const yesButton = document.createElement("button");
-		yesButton.onclick = () => yesVote(movieQuote);
-		yesButton.textContent = "Yes Vote";
-		htmlElement.appendChild(yesButton);
-		
-		const noButton = document.createElement("button");
-		noButton.onclick = () => noVote(movieQuote);
-		noButton.textContent = "Not a  Christmas Movie";
-		htmlElement.appendChild(noButton);
 	}
 }
 
@@ -234,7 +228,7 @@ function yesVote(quoteArg){
 	console.log("YesVote");
 	quoteArg.movieQuotePts++;
 	quoteArg.movieRank=true;
-	quoteVoteLoad();
+	//quoteVoteLoad();
 }
 
 function noVote(quoteArg){
@@ -242,7 +236,7 @@ function noVote(quoteArg){
 	console.log("NoVote");
 	(quoteArg.movieQuotePts > 0) ? quoteArg.movieQuotePts-- : quoteArg=0;
 	quoteArg.movieRank=false;
-	quoteVoteLoad();
+	//quoteVoteLoad();
 }
 
 function quoteVoteLoad(){
@@ -258,7 +252,25 @@ function quoteVoteLoad(){
 	}
 	displayOneQuote(MOVIE_A_DIV_ID,quotes[movieA]);
 	displayOneQuote(MOVIE_B_DIV_ID,quotes[movieB]);
+	quotes[movieA] = addVoteButtons(MOVIE_A_DIV_ID,quotes[movieA]);
+	quotes[movieB] = addVoteButtons(MOVIE_B_DIV_ID,quotes[movieB]);
 	setLocalFile(MOVIE_QUOTES, JSON.stringify(quotes));
 	updateLeaderBoard(quotes);
 	setTimeout(screenSwap, cfgActivityTimeOut);
 }	
+
+function addVoteButtons(screenDIV_ID, movieQuoteElement)
+{
+	if (screenDIV_ID && movieQuoteElement) {
+		htmlElement = document.getElementById(screenDIV_ID);
+			const yesButton = document.createElement("button");
+			yesButton.onclick = () => movieQuoteElement =yesVote(movieQuoteElement);
+			yesButton.textContent = "Yes Vote";
+			htmlElement.appendChild(yesButton);
+
+			const noButton = document.createElement("button");
+			yesButton.onclick = () => movieQuoteElement =noVote(movieQuoteElement);
+			yesButton.textContent = "No Vote";
+			htmlElement.appendChild(noButton);
+	}
+}
