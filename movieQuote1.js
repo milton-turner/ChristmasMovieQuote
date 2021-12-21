@@ -37,7 +37,7 @@ const MOVIE_B_DIV_ID = "Movie_B";
 const MOVIE_VOTE_BUTTON_DIV_ID = "ButtonSelection";
 const cfgLeaderBoardNum = 10;
 const cfgActivityTimeOut = 180000;
-const cfgScreenSwaps = 60000;
+const cfgScreenSwaps = 6000;
 const cfgQuoteSwap = 90000;
 var currentScreen = 0;
 var paused=false;
@@ -100,8 +100,8 @@ function updateLeaderBoard(QuotesData) {
 	 *  qualifyForLeaderBoard
 	 *  addToLeaderBoard
 	 */
-	QuotesData.sort( function(a, b) {b.movieQuotePts - a.movieQuotePts});
-	setLocalFile(LEADER_BOARD, JSON.stringify(QuotesData.slice(0,10)));
+	QuotesData.sort((a, b) => (b.movieQuotePts - a.movieQuotePts));
+	setLocalFile(LEADER_BOARD, JSON.stringify(QuotesData.slice(0,cfgLeaderBoardNum)));
 }
 
 function getLeaderBoard() {
@@ -168,7 +168,11 @@ function displayQuotes(displayElementID){
 		if(displayElementID){
 			htmlElementBucket = document.getElementById(displayElementID);
 			//htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(MOVIE_QUOTES));
-			data.forEach(d => {htmlElementBucket.innerHTML += ("<p>Movie: "+ d.movieTitle + "<br>Quote: " + d.movieQuote + "<br>Name: " + d.contestantName + "<br>Nation: " + d.contestantNation + "<\p>")});
+			data.forEach(d => {htmlElementBucket.innerHTML += ("<p>Movie: "+ d.movieTitle + 
+						"<br>Quote: " + d.movieQuote + 
+						"<br>Name: " + d.contestantName + 
+						"<br>Nation: " + d.contestantNation + 
+						"<br>Christmas Movie: " + d.movieRank +"<\p>")});
 		}else
 		{
 			document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
@@ -185,33 +189,49 @@ function displayOneQuote(displayElementID, movieQuote) {
 		htmlElement = document.getElementById(displayElementID);
 		//htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(MOVIE_QUOTES));
 		htmlElement.innerHTML = ("<p>Movie: " + movieQuote.movieTitle +
-			"<br>Quote: " +
-			movieQuote.movieQuote + "<br>Name: " +
-			movieQuote.contestantName + "<br>Nation: " +
-			movieQuote.contestantNation + "<\p>");
+			"<br>Quote: " +	movieQuote.movieQuote + 
+			"<br>Name: " + movieQuote.contestantName + 
+			"<br>Nation: " + movieQuote.contestantNation + 
+			"<br>Christmas Movie: " + movieQuote.movieRank +"<\p>");
 	}
 }
 
 function displayLB(displayElementID){
 	//console.log(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
 	/**ToDo handle null case from leader board local storeage */
-	data = JSON.parse(localStorage.getItem(LEADER_BOARD));
-	if(data){
-		if(displayElementID){
-			let htmlElementBucket = document.getElementById(displayElementID);
-			//htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(LEADER_BOARD));
-			//htmlElementBucket.textContent=JSON.stringify(localStorage.getItem(LEADER_BOARD));
-			data.forEach(d => {htmlElementBucket.innerHTML += ("<p>Movie: "+ d.movieTitle + "<br>Quote: " + d.movieQuote + "<br>Name: " + d.contestantName + "<br>Nation: " + d.contestantNation + "<\p>")});
+	try{
+		data = JSON.parse(localStorage.getItem(LEADER_BOARD));
+	
+		if(data.sort((a, b) => (b.movieQuotePts - a.movieQuotePts)))
+		{
+			if(displayElementID){
+				let htmlElementBucket = document.getElementById(displayElementID);
+				for(let i=0; (i < cfgLeaderBoardNum) && (i < data.length); i++){
+					if(data[i].movieRank){
+						htmlElementBucket.innerHTML += ("<p>Movie: "+ data[i].movieTitle + 
+							"<br>Quote: " + data[i].movieQuote + 
+							"<br>Name: " + data[i].contestantName + 
+							"<br>Nation: " + data[i].contestantNation + 
+							"<br>Points: " + data[i].movieQuotePts + "<\p>")
+					}
+				}
 
+			}
+			else{
+				document.write(JSON.stringify(localStorage.getItem(LEADER_BOARD)));
+			}
 		}
-		else{
-			document.write(JSON.stringify(localStorage.getItem(MOVIE_QUOTES)));
+		else
+		{
+			document.write("No Votes yet");
 		}
+		setTimeout(screenSwap,cfgScreenSwaps);
 	}
-	else{
-		document.write("No Votes yet");
+	catch(error){
+		//No leader board local file yet
+		console.error(error);
+		goTitle();
 	}
-	setTimeout(screenSwap,cfgScreenSwaps);
 }
 
 function loadLocalFile(localFile){
@@ -228,7 +248,9 @@ function yesVote(quoteElement){
 	console.log("YesVote");
 	quotes[quoteElement].movieQuotePts++;
 	quotes[quoteElement].movieRank=true;
-	//quoteVoteLoad();
+	localStorage.setItem(MOVIE_QUOTES, JSON.stringify(quotes));
+	updateLeaderBoard(quotes);
+	quoteVoteLoad();
 }
 
 function noVote(quoteElement){
@@ -236,7 +258,9 @@ function noVote(quoteElement){
 	console.log("NoVote");
 	(quotes[quoteElement].movieQuotePts > 0) ? quotes[quoteElement].movieQuotePts-- : quotes[quoteElement].movieQuotePts=0;
 	quotes[quoteElement].movieRank=false;
-	//quoteVoteLoad();
+	localStorage.setItem(MOVIE_QUOTES, JSON.stringify(quotes));
+	updateLeaderBoard(quotes);
+	quoteVoteLoad();
 }
 
 function quoteVoteLoad(){
@@ -251,17 +275,18 @@ function quoteVoteLoad(){
 		goQuote();
 	}
 	displayOneQuote(MOVIE_A_DIV_ID,quotes[movieA]);
-	displayOneQuote(MOVIE_B_DIV_ID,quotes[movieB]);
 	addVoteButtons(MOVIE_A_DIV_ID, movieA);
+
+	displayOneQuote(MOVIE_B_DIV_ID,quotes[movieB]);
 	addVoteButtons(MOVIE_B_DIV_ID, movieB);
+
 	setLocalFile(MOVIE_QUOTES, JSON.stringify(quotes));
-	updateLeaderBoard(quotes);
 	setTimeout(screenSwap, cfgActivityTimeOut);
 }	
 
 function addVoteButtons(screenDIV_ID, movieQuoteElement)
 {
-	if (screenDIV_ID && movieQuoteElement) {
+	if (screenDIV_ID && quotes[movieQuoteElement]) {
 		htmlElement = document.getElementById(screenDIV_ID);
 			const yesButton = document.createElement("button");
 			yesButton.onclick = () => yesVote(movieQuoteElement);
@@ -269,8 +294,8 @@ function addVoteButtons(screenDIV_ID, movieQuoteElement)
 			htmlElement.appendChild(yesButton);
 
 			const noButton = document.createElement("button");
-			yesButton.onclick = () => noVote(movieQuoteElement);
-			yesButton.textContent = "No Vote";
+			noButton.onclick = () => noVote(movieQuoteElement);
+			noButton.textContent = "No Vote";
 			htmlElement.appendChild(noButton);
 	}
 }
