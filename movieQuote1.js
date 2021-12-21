@@ -222,25 +222,25 @@ function setLocalFile(localFile, localFileData){
 	localStorage.setItem(localFile, localFileData);
 }
 
-function yesVote(quoteArg){
+function yesVote(quoteElement){
 	// htmlElement = document.getElementById(displayElementID);
-	console.log("Movie A: \n" + JSON.stringify(quoteArg));
+	console.log("Movie A: \n" + JSON.stringify(quotes[quoteElement]));
 	console.log("YesVote");
-	quoteArg.movieQuotePts++;
-	quoteArg.movieRank=true;
+	quotes[quoteElement].movieQuotePts++;
+	quotes[quoteElement].movieRank=true;
 	//quoteVoteLoad();
 }
 
-function noVote(quoteArg){
-	console.log("Movie B: \n" + JSON.stringify(quoteArg));
+function noVote(quoteElement){
+	console.log("Movie B: \n" + JSON.stringify(quotes[quoteElement]));
 	console.log("NoVote");
-	(quoteArg.movieQuotePts > 0) ? quoteArg.movieQuotePts-- : quoteArg=0;
-	quoteArg.movieRank=false;
+	(quotes[quoteElement].movieQuotePts > 0) ? quotes[quoteElement].movieQuotePts-- : quotes[quoteElement].movieQuotePts=0;
+	quotes[quoteElement].movieRank=false;
 	//quoteVoteLoad();
 }
 
 function quoteVoteLoad(){
-	const quotes = JSON.parse(loadLocalFile(MOVIE_QUOTES));
+	quotes = JSON.parse(loadLocalFile(MOVIE_QUOTES));
 	if (quotes && quotes.length > 1) {
 		movieA = Math.floor(Math.random() * quotes.length);
 		do {
@@ -252,8 +252,8 @@ function quoteVoteLoad(){
 	}
 	displayOneQuote(MOVIE_A_DIV_ID,quotes[movieA]);
 	displayOneQuote(MOVIE_B_DIV_ID,quotes[movieB]);
-	quotes[movieA] = addVoteButtons(MOVIE_A_DIV_ID,quotes[movieA]);
-	quotes[movieB] = addVoteButtons(MOVIE_B_DIV_ID,quotes[movieB]);
+	addVoteButtons(MOVIE_A_DIV_ID, movieA);
+	addVoteButtons(MOVIE_B_DIV_ID, movieB);
 	setLocalFile(MOVIE_QUOTES, JSON.stringify(quotes));
 	updateLeaderBoard(quotes);
 	setTimeout(screenSwap, cfgActivityTimeOut);
@@ -264,12 +264,12 @@ function addVoteButtons(screenDIV_ID, movieQuoteElement)
 	if (screenDIV_ID && movieQuoteElement) {
 		htmlElement = document.getElementById(screenDIV_ID);
 			const yesButton = document.createElement("button");
-			yesButton.onclick = () => movieQuoteElement =yesVote(movieQuoteElement);
+			yesButton.onclick = () => yesVote(movieQuoteElement);
 			yesButton.textContent = "Yes Vote";
 			htmlElement.appendChild(yesButton);
 
 			const noButton = document.createElement("button");
-			yesButton.onclick = () => movieQuoteElement =noVote(movieQuoteElement);
+			yesButton.onclick = () => noVote(movieQuoteElement);
 			yesButton.textContent = "No Vote";
 			htmlElement.appendChild(noButton);
 	}
