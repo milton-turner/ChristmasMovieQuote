@@ -1,5 +1,6 @@
-#TitleImage {font-weight: bold;}
-#buttons
+#TitleImage {font-weight: bold;background: white;}
+#buttons{font: caption; font-size: 1em;}
 head {font-weight: bold;
     color: red;
     background: white;}
+body {background-image: url("Christmas Images Half.png");}

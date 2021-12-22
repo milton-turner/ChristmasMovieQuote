@@ -2,17 +2,24 @@
     <head>
         <title>Christmas Movie Title Screen</title>
     </head>
+    <style type="text/css">
+        @import url(ChristmasMovieQuote.css); /* @import comes first */
+        h1 {color: red; background: black;}
+        div{background-image: "Christmas Images Half.png";}
+    </style>
     <body onload="setTimeout(screenSwap,cfgScreenSwaps)">
         <div><!--Christmas Movie Title Screen-->
             <h1>Christmas Movie Title Screen</h1>
         </div>
-        <div id=TitleImage>
+        <div class="TitleImage" id=TitleImage>
             <img src="Christmas Images Half.png" alt="Title Screen">
-        <div>
+        <div class="buttons">
             <!--Button Tap to Vote-->
-            <button type="button" onclick=goVote()>Go Vote</button>
-            <button type="button" onclick=goQuotesDisplay()>Quotes</button>
-        </div>
+            <button type="button" onclick="goLBDisplay();"> Leader Board</button>
+            <button type="button" onclick="goVote();"> Vote Screen</button>
+            <button type="button" onclick="goQuote();"> Enter Quote</button>
+            <button type="button" onclick="goQuotesDisplay();"> View Quotes</button>
+            </div>
     </body>
     <script src="movieQuote1.js"></script>
 </html>
