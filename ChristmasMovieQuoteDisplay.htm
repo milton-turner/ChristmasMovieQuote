@@ -1,18 +1,19 @@
 <html>
     <head>
         <title>Christmas Movie Quotes</title>
+        <link rel="stylesheet" href="ChristmasMovieQuote.css">
     </head>
     <body onload="displayQuotes('QuoteDisplayID')">
         <h1>Display Movie Quotes</h1>
         <div id="QuoteDisplayID"><!--Display Christmas Movie Quotes-->
         </div>
-        <button type="button" onclick="goLBDisplay();"> Leader Board</button>
-        <button type="button" onclick="goVote();"> Vote Screen</button>
-        <button type="button" onclick="goQuote();"> Enter Quote</button>
-        <button type="button" onclick="goQuotesDisplay();"> View Quotes</button>
 
-    
-        <div>
+        <div id="ButtonSelection">
+            <button type="button" onclick="goLBDisplay();"> Leader Board</button>
+            <button type="button" onclick="goVote();"> Vote Screen</button>
+            <button type="button" onclick="goQuote();"> Enter Quote</button>
+            <button type="button" onclick="goQuotesDisplay();"> View Quotes</button>
+            <div>
             <!--Button going back to Leader Board-->
         </div>
         <script src="movieQuote1.js"></script>

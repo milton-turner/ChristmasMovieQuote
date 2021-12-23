@@ -2,8 +2,11 @@
 
 <head>
      <title>Place Your Favorite Christmas Movie Quote</title>
+    <link rel="stylesheet" href="ChristmasMovieQuote.css">
 </head>
-
+<style type="text/css">
+    @import url(ChristmasMovieQuote.css); /* @import comes first */
+</style>
 <body>
     <div>
         <!--Large Christmas title screen-->
@@ -39,7 +42,7 @@
             <label for="nations">Procuristan</label>            
         </div>
     </div>
-    <div>
+    <div id="ButtonSelection">
         <!--Submit and cancel buttons-->
         <button type="button" onclick="getMovie();"> Submit</button>
         <button type="button" onclick="clearForm();"> Cancel</button>
